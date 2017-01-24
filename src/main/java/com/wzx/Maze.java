@@ -18,22 +18,23 @@ public class Maze {
 
     private List<Integer> directions;
     private List<List<Integer>> grid;
-    private HashMap DX;
-    private HashMap DY;
-    private HashMap OPPOSITE;
+    private HashMap<Integer, Integer> DX;
+    private HashMap<Integer, Integer> DY;
+    private HashMap<Integer, Integer> OPPOSITE;
 
     private String maze = "";
 
     Maze() {
         directions = Arrays.asList(N, S, E, W);
         grid = new ArrayList<>();
-        DX = new HashMap();
-        DY = new HashMap();
-        OPPOSITE = new HashMap();
+        DX = new HashMap<>();
+        DY = new HashMap<>();
+        OPPOSITE = new HashMap<>();
         mapping(DX, DY, OPPOSITE);
     }
 
-    private void mapping(HashMap DX, HashMap DY, HashMap OPPOSITE) {
+    private void mapping(HashMap<Integer, Integer> DX, HashMap<Integer, Integer> DY,
+                         HashMap<Integer, Integer> OPPOSITE) {
         DX.put(E, 1);
         DX.put(W, -1);
         DX.put(N, 0);
@@ -88,16 +89,12 @@ public class Maze {
         Collections.shuffle(directions, new Random(System.nanoTime()));
 
         for (Integer direction : directions) {
-            int nx = cx + (int) DX.get(direction);
-            int ny = cy + (int) DY.get(direction);
+            int nx = cx + DX.get(direction);
+            int ny = cy + DY.get(direction);
 
-            /*
-            System.out.println("dir= " + direction +
-            "("+Integer.toBinaryString(direction)+")"+
-            ", cx= "+cx+", cy= "+cy+", nx= " + nx + ", ny= "+ ny);
-            */
-
-            if (between(ny, 0, grid.size() - 1) && between(nx, 0, grid.get(ny).size() - 1) && (grid.get(ny).get(nx) == 0)) {
+            if (between(ny, 0, grid.size() - 1)
+                    && between(nx, 0, grid.get(ny).size() - 1)
+                    && (grid.get(ny).get(nx) == 0)) {
                 grid.get(cy).set(cx, (grid.get(cy).get(cx) | direction));
                 grid.get(ny).set(nx, (grid.get(ny).get(nx) | (int) OPPOSITE.get(direction)));
                 // printArray(grid);
@@ -152,9 +149,5 @@ public class Maze {
     List<List<Integer>> getMaze(int rows, int cols) {
         generateMaze(rows, cols);
         return grid;
-    }
-
-    public static void main(String[] args) throws java.lang.Exception {
-
     }
 }
