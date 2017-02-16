@@ -110,7 +110,7 @@
         //cols = $("#col").val();
         $.ajax({
             url: pageurl + "maze",
-            type: "POST",
+            type: "GET",
             data: {
                 "rows": rows,
                 "cols": rows,
@@ -119,7 +119,7 @@
                 Processing.instances[0].maze(data);
             }
         });
-    })
+    });
 
     $('input').keypress(function (e) {
         if (e.which == 13) {

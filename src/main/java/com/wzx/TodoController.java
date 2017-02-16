@@ -1,5 +1,8 @@
 package com.wzx;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.hibernate.ObjectNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,11 +24,14 @@ public class TodoController {
     @Resource
     private TodoRepository repository;
 
+    @ApiOperation(value="获取TodoList", notes="")
     @RequestMapping(method = RequestMethod.GET)
     public List<Todo> list() {
         return this.repository.findAll();
     }
 
+    @ApiOperation(value="获取Todo详细信息", notes="根据url的id来获取Todo详细信息")
+    @ApiImplicitParam(name = "id", value = "TodoID", required = true, paramType = "path", dataType = "Long")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Todo get(@PathVariable Long id) {
         Todo todo = this.repository.findOne(id);
@@ -35,18 +41,26 @@ public class TodoController {
         return todo;
     }
 
-    @RequestMapping(method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public Todo create(@RequestBody Todo entity) {
-        logger.debug("create() with body {} of type {}", entity, entity.getClass());
-        return this.repository.save(entity);
+    @ApiOperation(value="创建Todo", notes="根据Todo对象创建")
+    @ApiImplicitParam(name = "content", value = "Todo内容字符", required = true, dataType = "String")
+    @RequestMapping(method = RequestMethod.POST)
+    public Todo create(@RequestBody String content) {
+        return this.repository.save(new Todo(content));
     }
 
+    @ApiOperation(value="更新Todo详细信息", notes="根据url的id来指定更新对象，并根据传过来的todo信息来更新详细信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "TodoID", required = true, paramType = "path", dataType = "Long"),
+            @ApiImplicitParam(name = "entity", value = "Todo详细实体entity", required = true, dataType = "Todo")
+    })
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public Todo update(@PathVariable Long id, @RequestBody Todo entity) {
         logger.debug("update() of id#{} with body {}", id, entity);
         return this.repository.save(entity);
     }
 
+    @ApiOperation(value="删除Todo", notes="根据url的id来指定删除对象")
+    @ApiImplicitParam(name = "id", value = "TodoID", required = true, dataType = "Long")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void delete(@PathVariable Long id) {
         this.repository.delete(id);

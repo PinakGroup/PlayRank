@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todos</title>
+    <script src="js/jquery.js"></script>
+</head>
+<body>
+<p>content: <input id="content" type="text" /></p>
+<button id="post">post</button>
+<button id="get">get</button>
+<div id="todos"></div>
+<script>
+    $("#post").click(function (e) {
+        $.ajax({
+            url: "/todos",
+            type: "POST",
+            contentType: "text/plain",
+            data: $("#content").val(),
+            success: function (data) {
+                $("#content").val("");
+                $.ajax({
+                    url: "/todos",
+                    type: "GET",
+                    success: function (data) {
+                        var result = $("<ul/>");
+                        $(data).each((i, ele)=>
+                                        result.append($("<li/>")
+                                                .append("id: "+ele.id+" | content: "+ele.content)));
+                        $("#todos").html(result);
+                    }
+                });
+            }
+        });
+    });
+
+    $("#get").click(function (e) {
+
+    });
+</script>
+</body>
+</html>
