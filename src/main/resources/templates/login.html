@@ -1,15 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-<form method="post">
+<form method="post" action="/login">
+Hello, {{name}}
     <div><label> 用户名 : <input type="text" name="username"/> </label></div>
     <div><label> 密  码 : <input type="password" name="password"/> </label></div>
     <div><input type="submit" value="登录"/></div>
-    <div>{{time}}</div>
 </form>
 </body>
 </html>

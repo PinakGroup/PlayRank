@@ -1,4 +1,4 @@
-package com.wzx;
+package com.wzx.domain;
 
 import java.util.*;
 
@@ -24,7 +24,7 @@ public class Maze {
 
     private String maze = "";
 
-    Maze() {
+    public Maze() {
         directions = Arrays.asList(N, S, E, W);
         grid = new ArrayList<>();
         DX = new HashMap<>();
@@ -146,7 +146,7 @@ public class Maze {
 //        printMaze(grid);
     }
 
-    List<List<Integer>> getMaze(int rows, int cols) {
+    public List<List<Integer>> getMaze(int rows, int cols) {
         generateMaze(rows, cols);
         return grid;
     }

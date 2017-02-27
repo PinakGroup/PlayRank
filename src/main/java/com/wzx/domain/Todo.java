@@ -1,4 +1,4 @@
-package com.wzx;
+package com.wzx.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,7 +38,7 @@ public class Todo implements Serializable {
 
     }
 
-    Todo(String content) {
+    public Todo(String content) {
         setContent(content);
     }
 

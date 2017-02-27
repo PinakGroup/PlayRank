@@ -1,4 +1,4 @@
-package com.wzx;
+package com.wzx.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,11 +17,11 @@ public class UrlController {
         return "index";
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    String login(Model model) {
-        model.addAttribute("time", new Date());
-        return "login";
-    }
+//    @RequestMapping(value = "/login", method = RequestMethod.GET)
+//    String login(Model model) {
+//        model.addAttribute("time", new Date());
+//        return "login";
+//    }
 
     @RequestMapping(value = "/todo", method = RequestMethod.GET)
     String todos() {

@@ -1,5 +1,7 @@
-package com.wzx;
+package com.wzx.web;
 
+import com.wzx.domain.Todo;
+import com.wzx.repository.TodoRepository;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -65,5 +67,4 @@ public class TodoController {
     public void delete(@PathVariable Long id) {
         this.repository.delete(id);
     }
-
 }
