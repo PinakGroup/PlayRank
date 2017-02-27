@@ -7,7 +7,6 @@ import com.wzx.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,10 +15,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.Map;
-
-import static java.lang.System.out;
 
 /**
  * Created by arthurwang on 17/2/22.
@@ -60,13 +55,20 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(@RequestParam(value="name", required=false, defaultValue="World") String name, Map<String, Object> model) {
-//        if (error != null)
-//            model.addAttribute("error", "Your username and password is invalid.");
-//
-//        if (logout != null)
-//            model.addAttribute("message", "You have been logged out successfully.");
-        model.put("name", name);
+    public String login(@RequestParam(value = "error",required = false) String error,
+                        @RequestParam(value = "logout",	required = false) String logout,
+                        Model model) {
+
+        if (error != null)
+            model.addAttribute("error", "Your username and password is invalid.");
+        else
+            model.addAttribute("error", "");
+
+        if (logout != null)
+            model.addAttribute("logout", "You have been logged out successfully.");
+        else
+            model.addAttribute("logout", "");
+
         return "login";
     }
 }
