@@ -7,6 +7,7 @@ import com.wzx.domain.User;
  */
 public interface UserService {
     void save(User user);
+    void setRole(User user, String roleName);
 
     User findByUsername(String username);
 }

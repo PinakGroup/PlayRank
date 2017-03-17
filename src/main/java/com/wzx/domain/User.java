@@ -1,21 +1,36 @@
 package com.wzx.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
-import java.util.Set;
+import javax.validation.constraints.NotNull;
+import java.util.Collection;
 
 /**
  * Created by arthurwang on 17/1/29.
  */
 @Entity
 public class User {
-    private long id;
-    private String username;
-    private String password;
-    private String passwordConfirm;
-    private Set<Role> roles;
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @NotNull
+    private String username;
+
+    @NotNull
+    private String password;
+
+    @Transient
+    @NotNull
+    @JsonIgnore
+    private String passwordConfirm;
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Collection<Role> roles;
+
     public Long getId() {
         return id;
     }
@@ -40,7 +55,6 @@ public class User {
         this.password = password;
     }
 
-    @Transient
     public String getPasswordConfirm() {
         return passwordConfirm;
     }
@@ -49,13 +63,11 @@ public class User {
         this.passwordConfirm = passwordConfirm;
     }
 
-    @ManyToMany
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    public Set<Role> getRoles() {
+    public Collection<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(Collection<Role> roles) {
         this.roles = roles;
     }
 }

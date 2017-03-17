@@ -18,4 +18,9 @@ public class UrlController {
     String todos() {
         return "todos";
     }
+
+    @RequestMapping(value = "/403", method = RequestMethod.GET)
+    String accessDenied() {
+        return "403";
+    }
 }
