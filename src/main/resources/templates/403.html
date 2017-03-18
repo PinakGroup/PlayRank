@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>没有权限</title>
+</head>
+<body>
+<h1>抱歉!</h1>
+<p>您没有权限访问该页面</p>
+<p><a href="/user">前往普通用户界面</a></p>
+<form method="post" action="/logout">
+    <div><input type="submit" value="退出"/></div>
+    {{#logout.length}}
+    <p>You have been logged out successfully.</p>
+    {{/logout.length}}
+</form>
+</body>
+</html>

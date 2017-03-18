@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>EtherJSON</title>
+    <script src="js/jquery.js"></script>
+    <script src="js/processing.js"></script>
+    <link type="text/css" href="css/bootstrap.css" rel="stylesheet" />
+    <style>
+        body {
+            padding-top: 3rem;
+        }
+
+        .jumbotron {
+            padding-top: 6rem;
+            padding-bottom: 6rem;
+            margin-bottom: 0;
+            background-color: #fff;
+        }
+
+        .featurette-divider {
+            margin: 5rem 0;
+        }
+
+        .vertical-center {
+            min-height: 100%;
+            /* Fallback for browsers do NOT support vh unit */
+            min-height: 100vh;
+            /* These two lines are counted as one :-)       */
+            display: flex;
+            align-items: center;
+        }
+
+        .row {
+            margin-top: 30px;
+            margin-bottom: 30px
+        }
+    </style>
+</head>
+
+<body>
+<header class="header">
+    <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
+        <a class="navbar-brand" href="#">EtherJSON</a>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Document</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Maze</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">GitHub</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<div class="container-fuild">
+    <div class="jumbotron text-center">
+        <h1 class="jumbotron-heading">EtherJSON</h1>
+        <p class="lead">Parsing JSON. Spring RESTful.</p>
+        <a class="btn btn-lg btn-primary" href="" role="button">View docs »</a>
+    </div>
+
+    <hr class="featurette-divider" />
+
+    <div class="container">
+        <div class="row vertical-center">
+            <div class="col-md-7">
+                <h2 class="featurette-heading">Generate Maze<br /> <span class="text-muted">It'll blow your mind.</span></h2>
+                <p class="lead"></p>
+            </div>
+
+            <div class="col-md-5">
+                <div class="row">
+                    <div class="input-group">
+                        <input id="row" type="text" class="form-control" placeholder="Rank" />
+                        <span class="input-group-btn">
+                        <button id="btn" class="btn btn-secondary" type="button">Generate</button>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="row text-center">
+                    <div class="col-md-12">
+                        <canvas id="mycanvas"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p class="float-right"><a href="#">Back to top</a></p>
+        <p>© 2017 Arthur Wang · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
+    </footer>
+</div>
+</body>
+<script>
+    var pageurl = window.location.href;
+    $("#btn").click(function (e) {
+        rows = $("#row").val();
+        //cols = $("#col").val();
+        $.ajax({
+            url: pageurl + "maze",
+            type: "GET",
+            data: {
+                "rows": rows,
+                "cols": rows,
+            },
+            success: function (data) {
+                Processing.instances[0].maze(data);
+            }
+        });
+    });
+
+    $('input').keypress(function (e) {
+        if (e.which == 13) {
+            $('#btn').click();
+            return false;
+        }
+    });
+</script>
+<script type="text/processing" data-processing-target="mycanvas">
+void setup() {
+    sideLength = 301;
+    size(sideLength, sideLength);
+    background(255);
+}
+void maze(g) {
+    background(255);
+    rows = $("#row").val() || 15;
+    //cols = $("#col").val() || 15;
+    cols = rows;
+    step = (width-1)/rows;
+
+    stroke(137, 194, 148, 50);
+    for(int i=0; i<=width-1;) {
+        line(i, 0, i, width-1);
+        line(0, i, width-1, i);
+        i+=step;
+    }
+
+    stroke(0);
+    line(0, 0, width, 0);
+    line(0, 0, 0, width);
+    for(int i=0; i<=rows-1; i++) {
+        for(int j=0; j<=rows-1; j++) {
+            if((g[i][j] & 2) == 0) {
+                line(step*j, step*(i+1), step*(j+1), step*(i+1));
+            }
+            if((g[i][j] & 4) == 0) {
+                line(step*(j+1), step*i, step*(j+1), step*(i+1));
+            }
+        }
+    }
+}
+</script>
+</html>
