@@ -1,6 +1,5 @@
 package com.wzx;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader;
 import com.wzx.domain.Role;
 import com.wzx.domain.User;
 import com.wzx.repository.RoleRepository;
@@ -12,8 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by arthurwang on 17/3/1.
@@ -46,9 +43,12 @@ public class DataInit {
         admin.setPassword(bCryptPasswordEncoder.encode("12"));
         admin.setPasswordConfirm(bCryptPasswordEncoder.encode("12"));
 
-        Role userRole = new Role("ADMIN");
+        Role adminRole = new Role("ADMIN");
+        roleRepository.save(adminRole);
+        Role userRole = new Role("USER");
         roleRepository.save(userRole);
-        admin.setRoles(Arrays.asList(userRole));
+
+        admin.setRoles(Arrays.asList(adminRole));
 
         userRepository.save(admin);
     }
