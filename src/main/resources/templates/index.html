@@ -107,11 +107,11 @@
         rows = $("#row").val();
         //cols = $("#col").val();
         $.ajax({
-            url: pageurl + "maze",
+            url: "/api/maze",
             type: "GET",
             data: {
                 "rows": rows,
-                "cols": rows,
+                "cols": rows
             },
             success: function (data) {
                 Processing.instances[0].maze(data);
