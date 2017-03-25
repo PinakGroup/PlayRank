@@ -15,13 +15,17 @@
     <div><label> 密  码 : <input type="password" name="password"/> </label></div>
     <div><input type="submit" value="登录"/></div>
 </form>
+<form method="get" action="/registration">
+    <div><input type="submit" value="注册"/></div>
+</form>
 {{/logged}}
-
+{{^logged}}
 <form method="post" action="/logout">
     <div><input type="submit" value="退出"/></div>
     {{#logout.length}}
     <p>You have been logged out successfully.</p>
     {{/logout.length}}
 </form>
+{{/logged}}
 </body>
 </html>

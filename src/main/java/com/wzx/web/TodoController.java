@@ -18,7 +18,7 @@ import java.util.List;
  * Created by arthurwang on 16/12/30.
  */
 @RestController
-@RequestMapping("/todos")
+@RequestMapping("/api/todos")
 public class TodoController {
 
     private Logger logger = LoggerFactory.getLogger(TodoController.class);

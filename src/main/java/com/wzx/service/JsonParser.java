@@ -1,6 +1,9 @@
 package com.wzx.service;
 
-import com.wzx.domain.JsonObject;
+import com.wzx.domain.Json.*;
+import com.wzx.exception.Location;
+import com.wzx.exception.ParseException;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -21,12 +24,12 @@ public class JsonParser {
     private int line;
     private int lineOffset;
     private int current;
-    private StringBuilder captureBuffer;
+    private StringBuilder captureBuffer;    // 需要存储的字符串
     private int captureStart;
     private int nestingLevel;
 
-    private Object temp;
-    private JsonObject j = new JsonObject();
+    private JsonArray array;
+    private JsonObject j = new JsonObject();   // 存储一个Object
 
     /*
  * |                      bufferOffset
@@ -54,28 +57,28 @@ public class JsonParser {
         parse(reader, DEFAULT_BUFFER_SIZE);
     }
 
-    public void parse(Reader reader, int buffersize) throws IOException {
+    public void parse(Reader reader, int bufferSize) throws IOException {
         if (reader == null) {
             throw new NullPointerException("reader is null");
         }
-        if (buffersize <= 0) {
-            throw new IllegalArgumentException("buffersize is zero or negative");
+        if (bufferSize <= 0) {
+            throw new IllegalArgumentException("bufferSize is zero or negative");
         }
         this.reader = reader;
-        buffer = new char[buffersize];
+        buffer = new char[bufferSize];
         bufferOffset = 0;   // 从输入起始位置开始读入buffer
         index = 0;  // buffer处理从起始位置开始
         fill = 0;   // buffer内容长度初始为0
-        line = 1;
+        line = 1;   // 第一行
         lineOffset = 0;
         current = 0;    // 当前字符
-        captureStart = -1;
+        captureStart = -1;  // 没有开始捕获字符串的状态
         read(); // 读一个字符
         skipWhiteSpace();   // 如果读到空白，继续读下去
-        readValue();
-        skipWhiteSpace();
+        readValue();    // 开始读取JSON值
+        skipWhiteSpace();   // 值结束后的空白
         if (!isEndOfText()) {
-            //throw error("Unexpected character");
+            throw error("Unexpected character");
         }
     }
 
@@ -93,22 +96,23 @@ public class JsonParser {
         return current == -1;
     }
 
-    private void readValue() throws IOException {
+    private JsonValue readValue() throws IOException {
+        JsonValue value = new JsonString("");
         switch (current) {
             case 'n':
-                readNull();
+                value = readNull();
                 break;
             case 't':
-                readTrue();
+                value = readTrue();
                 break;
             case 'f':
-                readFalse();
+                value = readFalse();
                 break;
             case '"':
-                temp = readString();
+                value = readString();
                 break;
             case '[':
-                readArray();
+                value = readArray();
                 break;
             case '{':
                 readObject();
@@ -127,35 +131,39 @@ public class JsonParser {
                 readNumber();
                 break;
             default:
-                //throw expected("value");
+                throw expected("value");
         }
+        return value;
     }
 
-    private void readNull() throws IOException {
+    private JsonLiteral readNull() throws IOException {
         read();
         readRequiredChar('u');
         readRequiredChar('l');
         readRequiredChar('l');
+        return new JsonLiteral("null");
     }
 
-    private void readTrue() throws IOException {
+    private JsonLiteral readTrue() throws IOException {
         read();
         readRequiredChar('r');
         readRequiredChar('u');
         readRequiredChar('e');
+        return new JsonLiteral("true");
     }
 
-    private void readFalse() throws IOException {
+    private JsonLiteral readFalse() throws IOException {
         read();
         readRequiredChar('a');
         readRequiredChar('l');
         readRequiredChar('s');
         readRequiredChar('e');
+        return new JsonLiteral("false");
     }
 
     private void readRequiredChar(char ch) throws IOException {
         if (!readChar(ch)) {
-            //throw expected("'" + ch + "'");
+            throw expected("'" + ch + "'");
         }
     }
 
@@ -167,7 +175,7 @@ public class JsonParser {
         return true;
     }
 
-    private String readString() throws IOException {
+    private JsonString readString() throws IOException {
         read();
         startCapture();
         while (current != '"') {
@@ -176,14 +184,14 @@ public class JsonParser {
                 readEscape();
                 startCapture();
             } else if (current < 0x20) {
-                //throw expected("valid string character");
+                throw expected("valid string character");
             } else {
                 read();
             }
         }
         String string = endCapture();
         read();
-        return string;
+        return new JsonString(string);
     }
 
     private void startCapture() {
@@ -241,14 +249,14 @@ public class JsonParser {
                 for (int i = 0; i < 4; i++) {
                     read();
                     if (!isHexDigit()) {
-                        //throw expected("hexadecimal digit");
+                        throw expected("hexadecimal digit");
                     }
                     hexChars[i] = (char)current;
                 }
                 captureBuffer.append((char)Integer.parseInt(new String(hexChars), 16));
                 break;
             default:
-                ///throw expected("valid escape sequence");
+                throw expected("valid escape sequence");
         }
         read();
     }
@@ -259,32 +267,34 @@ public class JsonParser {
                 || current >= 'A' && current <= 'F';
     }
 
-    private void readArray() throws IOException {
+    private JsonValue readArray() throws IOException {
+        JsonArray t = new JsonArray();
         read();
         if (++nestingLevel > MAX_NESTING_LEVEL) {
-            //throw error("Nesting too deep");
+            throw error("Nesting too deep");
         }
         skipWhiteSpace();
-        if (readChar(']')) {
-            nestingLevel--;
-            return;
-        }
+        // 有逗号说明有一组(List)值，要一直读完
         do {
             skipWhiteSpace();
-            readValue();
+            JsonValue value = readValue();
+            t.add(value);
             skipWhiteSpace();
         } while (readChar(','));
         if (!readChar(']')) {
-            //throw expected("',' or ']'");
+            throw expected("',' or ']'");
         }
-
         nestingLevel--;
+        if (nestingLevel == 1) {
+            array.add(t);
+        }
+        return t;
     }
 
     private void readObject() throws IOException {
         read();
         if (++nestingLevel > MAX_NESTING_LEVEL) {
-            //throw error("Nesting too deep");
+            throw error("Nesting too deep");
         }
         skipWhiteSpace();
         if (readChar('}')) {
@@ -292,26 +302,32 @@ public class JsonParser {
             return;
         }
         do {
+            array = new JsonArray();
             skipWhiteSpace();
-            String key = readName();
+            JsonString key = readName();
             skipWhiteSpace();
             if (!readChar(':')) {
-                //throw expected("':'");
+                throw expected("':'");
             }
             skipWhiteSpace();
-            readValue();
+            JsonValue value = readValue();
+            if (!value.isArray()) {
+                array.add(value);
+            }
             skipWhiteSpace();
-            j.setKV(key, temp);
+            if (array.size() == 1) {
+                j.setObject(key.toString(), array.getLastItem());
+            } else j.setObject(key.toString(), array);
         } while (readChar(','));
         if (!readChar('}')) {
-            //throw expected("',' or '}'");
+            throw expected("',' or '}'");
         }
         nestingLevel--;
     }
 
-    private String readName() throws IOException {
+    private JsonString readName() throws IOException {
         if (current != '"') {
-            //throw expected("name");
+            throw expected("name");
         }
         return readString();
     }
@@ -321,7 +337,7 @@ public class JsonParser {
         readChar('-');
         int firstDigit = current;
         if (!readDigit()) {
-            //throw expected("digit");
+            throw expected("digit");
         }
         if (firstDigit != '0') {
             while (readDigit()) {
@@ -329,7 +345,7 @@ public class JsonParser {
         }
         readFraction();
         readExponent();
-        temp = Double.parseDouble(endCapture());
+        //temp.add(Double.parseDouble(endCapture()));
     }
 
     private boolean readDigit() throws IOException {
@@ -350,7 +366,7 @@ public class JsonParser {
             return false;
         }
         if (!readDigit()) {
-            //throw expected("digit");
+            throw expected("digit");
         }
         while (readDigit()) {
         }
@@ -365,11 +381,28 @@ public class JsonParser {
             readChar('-');
         }
         if (!readDigit()) {
-            //throw expected("digit");
+            throw expected("digit");
         }
         while (readDigit()) {
         }
         return true;
+    }
+
+    private Location getLocation() {
+        int offset = bufferOffset + index - 1;
+        int column = offset - lineOffset + 1;
+        return new Location(offset, line, column);
+    }
+
+    private ParseException expected(String expected) {
+        if (isEndOfText()) {
+            return error("Unexpected end of input");
+        }
+        return error("Expected " + expected);
+    }
+
+    private ParseException error(String message) {
+        return new ParseException(message, getLocation());
     }
 
     public JsonObject getJ() {
@@ -396,6 +429,6 @@ public class JsonParser {
             line++;
             lineOffset = bufferOffset + index;
         }
-        current = buffer[index++];  // 目前的字符挪到buffer里的下一个
+        current = buffer[index++];  // 目前正在处理的字符挪到buffer里的下一个
     }
 }

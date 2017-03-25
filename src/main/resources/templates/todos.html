@@ -13,14 +13,14 @@
 <script>
     $("#post").click(function (e) {
         $.ajax({
-            url: "/todos",
+            url: "/api/todos",
             type: "POST",
             contentType: "text/plain",
             data: $("#content").val(),
             success: function (data) {
                 $("#content").val("");
                 $.ajax({
-                    url: "/todos",
+                    url: "/api/todos",
                     type: "GET",
                     success: function (data) {
                         var result = $("<ul/>");

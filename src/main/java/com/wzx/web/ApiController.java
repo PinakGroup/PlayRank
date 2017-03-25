@@ -23,6 +23,6 @@ public class ApiController {
     String json(@RequestParam(required = false, defaultValue = "{\"f\": -0.1}") String str) {
         JsonParser parser = new JsonParser();
         parser.parse(str);
-        return parser.getJ().getList();
+        return parser.getJ().getObject();
     }
 }
