@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * Created by arthurwang on 16/12/30.
  */
 @Controller
-public class UrlController {
+public class PagesController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     String index() {
         return "index";
@@ -22,5 +22,10 @@ public class UrlController {
     @RequestMapping(value = "/403", method = RequestMethod.GET)
     String accessDenied() {
         return "403";
+    }
+
+    @RequestMapping(value = "/parser", method = RequestMethod.GET)
+    String parser() {
+        return "parser";
     }
 }

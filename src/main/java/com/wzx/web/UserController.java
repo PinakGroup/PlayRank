@@ -9,7 +9,6 @@ import com.wzx.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,9 +35,6 @@ public class UserController {
     @Autowired
     private UserValidator userValidator;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
-
     @Resource
     private UserRepository userRepository;
 
@@ -49,14 +45,14 @@ public class UserController {
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('ADMIN')")
     public String helloAdmin() {
-        return "hello, admin!";
+        return "hello, ADMIN!";
     }
 
     @ResponseBody
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public String helloUser() {
-        return "hello, user!";
+        return "hello, USER!";
     }
 
     @ResponseBody
