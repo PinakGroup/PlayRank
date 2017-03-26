@@ -19,7 +19,6 @@
             contentType: "application/json",
             data: {"str": $("#json").val()},
             success: function (data) {
-                console.log(data);
                 $("#result").text(data)
             },
             error: function () {

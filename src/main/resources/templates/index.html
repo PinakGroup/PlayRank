@@ -37,6 +37,27 @@
             margin-top: 30px;
             margin-bottom: 30px
         }
+
+        footer {
+            background-color: #F7F7F7;
+            padding: 2rem 0;
+            margin-top: 2rem;
+            display: block;
+
+            width: 100%;
+        }
+
+        footer.container {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        .card {
+            height: 170px;
+            width: 100%;
+            overflow-y: scroll;
+            overflow-x: scroll;
+        }
     </style>
 </head>
 
@@ -50,10 +71,21 @@
                     <a class="nav-link" href="#">Document</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="#">Parser</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="#">Maze</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">GitHub</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav navbar-right">
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/registration">Registration</a>
                 </li>
             </ul>
         </div>
@@ -72,12 +104,40 @@
     <div class="container">
         <div class="row vertical-center">
             <div class="col-md-7">
-                <h2 class="featurette-heading">Generate Maze<br /> <span class="text-muted">It'll blow your mind.</span></h2>
+                <h2 class="featurette-heading">Parsing JSON<br /> <span class="text-muted">Through a fast and reliable <br />
+                web service</span></h2>
                 <p class="lead"></p>
             </div>
 
             <div class="col-md-5">
                 <div class="row">
+                    <label for="jsonInput">JSON Input</label>
+                    <div class="input-group">
+                        <textarea id="jsonInput" class="form-control" rows="7" ></textarea>
+                        <span id="jsonSubmit" class="input-group-addon btn btn-primary">Submit</span>
+                    </div>
+                    <label for="jsonOutput">Output</label>
+                    <div class="card card-outline-secondary mb-3 text-center">
+                        <div id="jsonOutput" class="card-block">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="featurette-divider" />
+
+    <div class="container">
+        <div class="row vertical-center">
+            <div class="col-md-7">
+                <h2 class="featurette-heading">Generate Maze<br /> <span class="text-muted">It'll blow your mind.</span></h2>
+                <p class="lead"></p>
+            </div>
+
+            <div class="col-md-5">
+                    <div class="row">
                     <div class="input-group">
                         <input id="row" type="text" class="form-control" placeholder="Rank" />
                         <span class="input-group-btn">
@@ -96,13 +156,14 @@
     </div>
 
     <footer>
-        <p class="float-right"><a href="#">Back to top</a></p>
-        <p>© 2017 Arthur Wang · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
+        <div class="container">
+            <p class="float-right"><a href="#">Back to top</a></p>
+            <p>© 2017 Arthur Wang · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
+        </div>
     </footer>
 </div>
 </body>
 <script>
-    var pageurl = window.location.href;
     $("#btn").click(function (e) {
         rows = $("#row").val();
         //cols = $("#col").val();
@@ -117,6 +178,21 @@
                 Processing.instances[0].maze(data);
             }
         });
+    });
+
+    $("#jsonSubmit").click(function (e) {
+        $.ajax({
+            url: "/api/json",
+            type: "GET",
+            contentType: "application/json",
+            data: {"str": $("#jsonInput").val()},
+            success: function (data) {
+                $("#jsonOutput").text(data)
+            },
+            error: function () {
+                console.log("error")
+            }
+        })
     });
 
     $('input').keypress(function (e) {
