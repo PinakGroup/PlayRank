@@ -1,5 +1,6 @@
 package com.wzx;
 
+import com.wzx.service.security.CustomAuthenticationFailureHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +22,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -48,6 +52,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll()
                 .and()
             .formLogin()
+                .failureHandler(customAuthenticationFailureHandler)
                 .loginPage("/login")
                 .permitAll()
                 .and()

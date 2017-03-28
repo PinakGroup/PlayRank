@@ -105,17 +105,19 @@
 </header>
 <p class="text-info">You have the role as {{role}}</p>
 <div class="container">
+    {{#logged}}
     <h2 class="form-signin-heading">Sign in to continue to EtherJSON</h2>
+    {{/logged}}
     <div class="loginmodal-container">
         <img class="profile-img" src="img/holder.png" alt="">
         {{#logged}}
         <form class="form-signin" method="post" action="/login">
-            {{#error.length}}
+            {{#error}}
             <p class="text-danger">Your username or password is invalid.</p>
-            {{/error.length}}
-            {{#logout.length}}
+            {{/error}}
+            {{#logout}}
             <p class="text-danger">You have been logged out successfully.</p>
-            {{/logout.length}}
+            {{/logout}}
             <input type="text" class="form-control" name="username" placeholder="Username" required autofocus>
             <input type="password" class="form-control" name="password" placeholder="Password" required>
             <div class="checkbox">
@@ -130,6 +132,7 @@
 
         {{^logged}}
         <form class="form-signin" method="post" action="/logout">
+            <h3 class="form-signin-heading">{{name}}</h3>
             <button class="btn btn-lg btn-primary btn-block" type="submit">
             Sign Out</button>
         </form>

@@ -2,19 +2,24 @@ package com.wzx;
 
 import com.wzx.domain.User;
 import com.wzx.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+
+import javax.inject.Inject;
 
 /**
  * Created by arthurwang on 17/2/22.
  */
 @Component
 public class UserValidator implements Validator {
-    @Autowired
     private UserService userService;
+
+    @Inject
+    public UserValidator(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public boolean supports(Class<?> aClass) {
@@ -26,20 +31,20 @@ public class UserValidator implements Validator {
         User user = (User) o;
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "NotEmpty");
-        if (user.getUsername().length() < 1 || user.getUsername().length() > 32) {
-            errors.rejectValue("username", "Size.userForm.username");
+        if (user.getUsername().length() < 2 || user.getUsername().length() > 32) {
+            errors.rejectValue("username", "Size.userForm.username", "Username must be between 2 and 32 characters long");
         }
         if (userService.findByUsername(user.getUsername()) != null) {
-            errors.rejectValue("username", "Duplicate.userForm.username");
+            errors.rejectValue("username", "Duplicate.userForm.username", "Username has been taken");
         }
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotEmpty");
-        if (user.getPassword().length() < 1 || user.getPassword().length() > 32) {
-            errors.rejectValue("password", "Size.userForm.password");
+        if (user.getPassword().length() < 2 || user.getPassword().length() > 32) {
+            errors.rejectValue("password", "Size.userForm.password", "Password must be between 2 and 32 characters long");
         }
 
         if (!user.getPasswordConfirm().equals(user.getPassword())) {
-            errors.rejectValue("passwordConfirm", "Diff.userForm.passwordConfirm");
+            errors.rejectValue("passwordConfirm", "Diff.userForm.passwordConfirm", "Two passwords are not the same");
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.wzx.service;
+package com.wzx.service.security;
 
 /**
  * Created by arthurwang on 17/1/29.

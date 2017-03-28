@@ -2,44 +2,37 @@ package com.wzx.web;
 
 import com.wzx.UserValidator;
 import com.wzx.domain.User;
-import com.wzx.repository.RoleRepository;
-import com.wzx.repository.UserRepository;
-import com.wzx.service.SecurityService;
 import com.wzx.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.wzx.service.security.SecurityService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
+import javax.inject.Inject;
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * Created by arthurwang on 17/2/22.
  */
 @Controller
 public class UserController {
-    @Autowired
     private UserService userService;
-
-    @Autowired
     private SecurityService securityService;
 
-    @Autowired
-    private UserValidator userValidator;
+    @Inject
+    public UserController(UserService userService, SecurityService securityService) {
+        this.userService = userService;
+        this.securityService = securityService;
+    }
 
-    @Resource
-    private UserRepository userRepository;
-
-    @Resource
-    RoleRepository roleRepository;
+    @InitBinder
+    protected void initBinder(final WebDataBinder binder) {
+        binder.addValidators(new UserValidator(userService));
+    }
 
     @ResponseBody
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
@@ -55,30 +48,21 @@ public class UserController {
         return "hello, USER!";
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/listuser", method = RequestMethod.GET)
-    public List<User> listuser() {
-        return this.userRepository.findAll();
-    }
-
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
         model.addAttribute("userForm", new User());
+        model.addAttribute("errors", "");
         return "registration";
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String registration(@Valid User userForm, BindingResult bindingResult, Model model) {
-        userValidator.validate(userForm, bindingResult);
         if (bindingResult.hasErrors()) {
-            return "error";
+            model.addAttribute("errors", bindingResult.getFieldError().getDefaultMessage());
+            return "/registration";
         }
-
-        userService.save(userForm);
-        userService.setRole(userForm, "USER");
-
+        userService.save(userForm, "USER");
         securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
-
         return "redirect:/login";
     }
 
@@ -89,14 +73,15 @@ public class UserController {
         model.addAttribute("error", error);
         model.addAttribute("logout", logout);
 
-        String granted =
-                SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString();
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        String granted = SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString();
         model.addAttribute("role", granted);
         if(!granted.equals("[ROLE_ANONYMOUS]")) {
             model.addAttribute("logged", false);
+            model.addAttribute("name", name);
+        } else {
+            model.addAttribute("logged", true);
         }
-        else model.addAttribute("logged", true);
-
         return "login";
     }
 }
