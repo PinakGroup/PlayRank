@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>Admin</title>
+    <script src="js/jquery.js"></script>
+    <script src="https://use.fontawesome.com/0b6d0e379a.js"></script>
+    <link type="text/css" href="css/bootstrap.css" rel="stylesheet"/>
+    <style>
+        body {
+            padding-top: 5rem;
+        }
+        .side {
+            margin-left: 3rem;
+        }
+    </style>
+</head>
+<body>
+<header class="header">
+    <nav class="navbar navbar-inverse fixed-top bg-inverse">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/"> EtherJSON </a>
+        </div>
+    </nav>
+</header>
+<div class="container">
+    {{#error}}
+    <div class="alert alert-danger" role="alert">
+        No such user!
+    </div>
+    {{/error}}
+    <div class="card">
+        <div class="card-block">
+            <h4 class="card-title">Manage Users</h4>
+            <ul class="list-group ">
+                {{#users}}
+                <li class="row list-group-item">
+                    <div class="image">
+                        <img src="http://placehold.it/80" class="img-circle img-responsive" alt=""/>
+                    </div>
+                    <div class="side">
+                        <div class="user">
+                            <p>Username: <span class="userName">{{value}}</span></p>
+                            <p>ID: <span class="id">{{key}}</span></p>
+                        </div>
+                        <div class="action">
+                            <button type="button" class="btn btn-primary btn-sm" title="Edit">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="btn btn-success btn-sm" title="Approved">
+                                <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="btn btn-danger btn-sm" title="Delete">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </li>
+                {{/users}}
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+    $(".btn-danger").click(function (e) {
+        var _this = $(this);
+        var id = _this.parent().siblings(".user").find(".id").text();
+        $.ajax({
+            url: "/admin/user/"+id,
+            type: "DELETE",
+            success: function (e) {
+                _this.closest("li").remove();
+            },
+            error: function (e) {
+                console.log(e);
+            }
+        })
+    })
+</script>
+</body>
+</html>

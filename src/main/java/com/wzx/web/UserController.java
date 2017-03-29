@@ -35,13 +35,6 @@ public class UserController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public String helloAdmin() {
-        return "hello, ADMIN!";
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public String helloUser() {
@@ -59,7 +52,7 @@ public class UserController {
     public String registration(@Valid User userForm, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult.getFieldError().getDefaultMessage());
-            return "/registration";
+            return "registration";
         }
         userService.save(userForm, "USER");
         securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());

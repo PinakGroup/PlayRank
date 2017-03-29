@@ -99,13 +99,13 @@
                     <a class="nav-link" href="#">Parser</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Maze</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="#">GitHub</a>
                 </li>
             </ul>
             <ul class="navbar-nav navbar-right">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin">Admin</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/login">Login</a>
                 </li>
@@ -207,9 +207,9 @@
     $("#jsonSubmit").click(function (e) {
         $.ajax({
             url: "/api/json",
-            type: "GET",
+            type: "POST",
             contentType: "application/json",
-            data: {"str": $("#jsonInput").val()},
+            data: $("#jsonInput").val(),
             success: function (data) {
                 $("#jsonOutput").text(data)
             },
