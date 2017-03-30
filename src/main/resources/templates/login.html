@@ -1,19 +1,29 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
 <head>
-    <title>Login</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Sign In</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link type="text/css" href="css/bootstrap.css" rel="stylesheet" />
     <style>
+        body {
+            padding-top: 3rem;
+        }
+        .container {
+            margin-bottom: 2rem;
+        }
         .form-signin
         {
             max-width: 330px;
             padding: 15px;
             margin: 0 auto;
         }
-        .form-signin .form-signin-heading, .form-signin .checkbox
+        .form-signin-heading, .form-signin .checkbox
         {
-            margin-bottom: 10px;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+        .form-signin-heading {
+            text-align: center;
         }
         .form-signin .checkbox
         {
@@ -45,22 +55,6 @@
             border-top-left-radius: 0;
             border-top-right-radius: 0;
         }
-        .account-wall
-        {
-            margin-top: 20px;
-            padding: 40px 0px 20px 0px;
-            background-color: #f7f7f7;
-            -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-            -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-            box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-        }
-        .login-title
-        {
-            color: #555;
-            font-size: 18px;
-            font-weight: 400;
-            display: block;
-        }
         .profile-img
         {
             width: 96px;
@@ -88,49 +82,68 @@
             display: flex;
             align-items: center;
         }
+        .loginmodal-container {
+            padding: 30px;
+            max-width: 350px;
+            width: 100% !important;
+            background-color: #F7F7F7;
+            margin: 0 auto;
+            border-radius: 2px;
+            box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        .text-info {
+            margin-top: 10px;
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body>
+<header class="header">
+    <nav class="navbar navbar-inverse fixed-top bg-inverse">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/"> EtherJSON </a>
+        </div>
+    </nav>
+</header>
 <p class="text-info">You have the role as {{role}}</p>
 <div class="container">
-    <div class="row vertical-center">
-        <div class="col-sm-12 col-md-4 offset-md-4">
-            <h1 class="text-center login-title"><strong>Sign in to continue to EtherJSON</strong></h1>
-            <div class="account-wall">
-                <img class="profile-img" src="img/holder.png" alt="">
-                {{#logged}}
-                <form class="form-signin" method="post" action="/login">
-                    {{#error.length}}
-                    <p class="text-danger">Your username or password is invalid.</p>
-                    {{/error.length}}
-                    {{#logout.length}}
-                    <p class="text-danger">You have been logged out successfully.</p>
-                    {{/logout.length}}
-                    <input type="text" class="form-control" name="username" placeholder="Username" required autofocus>
-                    <input type="password" class="form-control" name="password" placeholder="Password" required>
-                    <button class="btn btn-lg btn-primary btn-block" type="submit">
-                        Sign in</button>
-                    <label class="checkbox pull-left">
-                        <input type="checkbox" value="remember-me">
-                        Remember me
-                    </label>
-                    <a href="#" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
-                </form>
-                {{/logged}}
-
-                {{^logged}}
-                <form class="form-signin" method="post" action="/logout">
-                    <button class="btn btn-lg btn-primary btn-block" type="submit">
-                        Sign Out</button>
-                </form>
-                {{/logged}}
+    {{#logged}}
+    <h2 class="form-signin-heading">Sign in to continue to EtherJSON</h2>
+    {{/logged}}
+    <div class="loginmodal-container">
+        <img class="profile-img" src="img/holder.png" alt="">
+        {{#logged}}
+        <form class="form-signin" method="post" action="/login">
+            {{#error}}
+            <p class="text-danger">Your username or password is invalid.</p>
+            {{/error}}
+            {{#logout}}
+            <p class="text-danger">You have been logged out successfully.</p>
+            {{/logout}}
+            <input type="text" class="form-control" name="username" placeholder="Username" required autofocus>
+            <input type="password" class="form-control" name="password" placeholder="Password" required>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" value="remember-me"> Remember me
+                </label>
+                <a href="#" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
             </div>
-            {{#logged}}
-            <a href="registration" class="text-center new-account">Create an account </a>
-            {{/logged}}
-        </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        </form>
+        {{/logged}}
+
+        {{^logged}}
+        <form class="form-signin" method="post" action="/logout">
+            <h3 class="form-signin-heading">{{name}}</h3>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">
+            Sign Out</button>
+        </form>
+        {{/logged}}
     </div>
-</div>
+    {{#logged}}
+    <a href="/registration" class="text-center new-account">Create an account </a>
+    {{/logged}}
 </div>
 </body>
 </html>

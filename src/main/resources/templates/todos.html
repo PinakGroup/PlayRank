@@ -35,7 +35,10 @@
     });
 
     $("#get").click(function (e) {
-
+$.ajax({
+    type: "DELETE",
+    url: "api/todos/1"
+})
     });
 </script>
 </body>

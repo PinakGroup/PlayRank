@@ -4,10 +4,10 @@ import com.wzx.domain.Role;
 import com.wzx.domain.User;
 import com.wzx.repository.RoleRepository;
 import com.wzx.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
 import java.util.Arrays;
 
 /**
@@ -15,20 +15,17 @@ import java.util.Arrays;
  */
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
     private UserRepository userRepository;
-
-    @Autowired
     private RoleRepository roleRepository;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-
-    @Override
-    public void save(User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        //user.setRoles(new HashSet<>(roleRepository.findAll()));
-        //userRepository.save(user);
+    @Inject
+    public UserServiceImpl(UserRepository userRepository,
+                           RoleRepository roleRepository,
+                           BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
@@ -36,6 +33,12 @@ public class UserServiceImpl implements UserService {
         Role role = roleRepository.findByName(roleName);
         user.setRoles(Arrays.asList(role));
         userRepository.save(user);
+    }
+
+    @Override
+    public void save(User user, String roleName) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        setRole(user, roleName);
     }
 
     @Override

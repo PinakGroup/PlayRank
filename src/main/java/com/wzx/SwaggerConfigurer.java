@@ -30,7 +30,7 @@ public class SwaggerConfigurer {
         return new ApiInfoBuilder()
                 .title("Spring Boot中使用Swagger2构建RESTful APIs")
                 .description("EtherJSON")
-                .termsOfServiceUrl("")
+                .termsOfServiceUrl("w-zx/github.com/etherjson")
                 .contact("Arthur Wang")
                 .version("1.0")
                 .build();

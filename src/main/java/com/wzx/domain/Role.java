@@ -11,7 +11,7 @@ import java.util.Set;
 @Table(name = "role")
 public class Role {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToMany(mappedBy = "roles")
@@ -36,11 +36,9 @@ public class Role {
     }
 
     public Role() {
-        super();
     }
 
     public Role(final String name) {
-        super();
         this.name = name;
     }
 
@@ -72,7 +70,7 @@ public class Role {
             return false;
         }
         final Role role = (Role) obj;
-        if (!role.equals(role.name)) {
+        if (!this.name.equals(role.name)) {
             return false;
         }
         return true;

@@ -3,6 +3,7 @@ package com.wzx.service;
 import com.wzx.domain.Json.*;
 import com.wzx.exception.Location;
 import com.wzx.exception.ParseException;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -11,6 +12,7 @@ import java.io.StringReader;
 /**
  * Created by arthurwang on 17/3/24.
  */
+@Service
 public class JsonParser {
     private static final int MAX_NESTING_LEVEL = 1000;
     private static final int MIN_BUFFER_SIZE = 10;
