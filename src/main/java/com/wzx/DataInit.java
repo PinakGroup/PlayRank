@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * Created by arthurwang on 17/3/1.
@@ -41,7 +41,7 @@ public class DataInit {
         Role userRole = new Role("USER");
         roleRepository.save(userRole);
 
-        admin.setRoles(Arrays.asList(adminRole));
+        admin.setRoles(Collections.singletonList(adminRole));
 
         userRepository.save(admin);
     }

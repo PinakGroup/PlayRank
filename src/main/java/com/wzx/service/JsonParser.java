@@ -59,7 +59,7 @@ public class JsonParser {
         parse(reader, DEFAULT_BUFFER_SIZE);
     }
 
-    public void parse(Reader reader, int bufferSize) throws IOException {
+    private void parse(Reader reader, int bufferSize) throws IOException {
         if (reader == null) {
             throw new NullPointerException("reader is null");
         }

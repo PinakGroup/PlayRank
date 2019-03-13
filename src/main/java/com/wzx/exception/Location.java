@@ -11,17 +11,17 @@ public class Location {
     /**
      * The absolute character index, starting at 0.
      */
-    public final int offset;
+    private final int offset;
 
     /**
      * The line number, starting at 1.
      */
-    public final int line;
+    private final int line;
 
     /**
      * The column number, starting at 1.
      */
-    public final int column;
+    private final int column;
 
     public Location(int offset, int line, int column) {
         this.offset = offset;

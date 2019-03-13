@@ -8,7 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * Created by arthurwang on 17/2/22.
@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void setRole(User user, String roleName) {
         Role role = roleRepository.findByName(roleName);
-        user.setRoles(Arrays.asList(role));
+        user.setRoles(Collections.singletonList(role));
         userRepository.save(user);
     }
 
