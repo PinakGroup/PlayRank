@@ -1,4 +1,4 @@
-package com.wzx;
+package com.wzx.configuration;
 
 import com.wzx.service.security.CustomAuthenticationFailureHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javax.inject.Inject;
+
 /**
  * Created by arthurwang on 16/12/30.
  */
@@ -21,10 +23,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled=true)
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
-
     private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
-    @Autowired
+    @Inject
     public WebSecurityConfigurer(UserDetailsService userDetailsService, CustomAuthenticationFailureHandler customAuthenticationFailureHandler) {
         this.userDetailsService = userDetailsService;
         this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
@@ -59,6 +60,10 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .failureHandler(customAuthenticationFailureHandler)
                 .loginPage("/login")
                 .permitAll()
+                .and()
+                .logout().deleteCookies("JSESSIONID")
+                .and()
+                .rememberMe().key("uniqueAndSecret")
                 .and()
             .exceptionHandling().accessDeniedPage("/403")
                 .and()

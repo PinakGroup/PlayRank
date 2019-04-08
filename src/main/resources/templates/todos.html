@@ -6,9 +6,9 @@
     <script src="js/jquery.js"></script>
 </head>
 <body>
-<p>content: <input id="content" type="text" /></p>
+<p>content: <input id="content" type="text"/></p>
 <button id="post">post</button>
-<button id="get">get</button>
+<button id="delete">delete</button>
 <div id="todos"></div>
 <script>
     $("#post").click(function (e) {
@@ -24,9 +24,9 @@
                     type: "GET",
                     success: function (data) {
                         var result = $("<ul/>");
-                        $(data).each((i, ele)=>
-                                        result.append($("<li/>")
-                                                .append("id: "+ele.id+" | content: "+ele.content)));
+                        $(data).each((i, ele) =>
+                        result.append($("<li/>")
+                            .append("id: " + ele.id + " | content: " + ele.content)));
                         $("#todos").html(result);
                     }
                 });
@@ -34,11 +34,11 @@
         });
     });
 
-    $("#get").click(function (e) {
-$.ajax({
-    type: "DELETE",
-    url: "api/todos/1"
-})
+    $("#delete").click(function (e) {
+        $.ajax({
+            type: "DELETE",
+            url: "api/todos/"+$("#content").val()
+        })
     });
 </script>
 </body>

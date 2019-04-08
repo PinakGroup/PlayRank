@@ -2,35 +2,37 @@
 <html lang="en">
 <head>
     <title>Sign In</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <link type="text/css" href="css/bootstrap.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link type="text/css" href="css/bootstrap.css" rel="stylesheet"/>
     <style>
         body {
             padding-top: 3rem;
         }
+
         .container {
             margin-bottom: 2rem;
         }
-        .form-signin
-        {
+
+        .form-signin {
             max-width: 330px;
             padding: 15px;
             margin: 0 auto;
         }
-        .form-signin-heading, .form-signin .checkbox
-        {
+
+        .form-signin-heading, .form-signin .checkbox {
             margin-bottom: 20px;
             margin-top: 20px;
         }
+
         .form-signin-heading {
             text-align: center;
         }
-        .form-signin .checkbox
-        {
+
+        .form-signin .checkbox {
             font-weight: normal;
         }
-        .form-signin .form-control
-        {
+
+        .form-signin .form-control {
             position: relative;
             font-size: 16px;
             height: auto;
@@ -39,24 +41,24 @@
             -moz-box-sizing: border-box;
             box-sizing: border-box;
         }
-        .form-signin .form-control:focus
-        {
+
+        .form-signin .form-control:focus {
             z-index: 2;
         }
-        .form-signin input[type="text"]
-        {
+
+        .form-signin input[type="text"] {
             margin-bottom: -1px;
             border-bottom-left-radius: 0;
             border-bottom-right-radius: 0;
         }
-        .form-signin input[type="password"]
-        {
+
+        .form-signin input[type="password"] {
             margin-bottom: 10px;
             border-top-left-radius: 0;
             border-top-right-radius: 0;
         }
-        .profile-img
-        {
+
+        .profile-img {
             width: 96px;
             height: 96px;
             margin: 0 auto 10px;
@@ -65,15 +67,16 @@
             -webkit-border-radius: 50%;
             border-radius: 50%;
         }
-        .need-help
-        {
+
+        .need-help {
             margin-top: 10px;
         }
-        .new-account
-        {
+
+        .new-account {
             display: block;
             margin-top: 10px;
         }
+
         .vertical-center {
             min-height: 100%;
             /* Fallback for browsers do NOT support vh unit */
@@ -82,6 +85,7 @@
             display: flex;
             align-items: center;
         }
+
         .loginmodal-container {
             padding: 30px;
             max-width: 350px;
@@ -92,6 +96,7 @@
             box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
             overflow: hidden;
         }
+
         .text-info {
             margin-top: 10px;
             margin-left: 10px;
@@ -108,12 +113,12 @@
 </header>
 <p class="text-info">You have the role as {{role}}</p>
 <div class="container">
-    {{#logged}}
+    {{#anonymous}}
     <h2 class="form-signin-heading">Sign in to continue to EtherJSON</h2>
-    {{/logged}}
+    {{/anonymous}}
     <div class="loginmodal-container">
         <img class="profile-img" src="img/holder.png" alt="">
-        {{#logged}}
+        {{#anonymous}}
         <form class="form-signin" method="post" action="/login">
             {{#error}}
             <p class="text-danger">Your username or password is invalid.</p>
@@ -125,25 +130,26 @@
             <input type="password" class="form-control" name="password" placeholder="Password" required>
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" value="remember-me"> Remember me
+                    <input type="checkbox" name="remember-me"> Remember me
                 </label>
                 <a href="#" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
             </div>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
         </form>
-        {{/logged}}
+        {{/anonymous}}
 
-        {{^logged}}
+        {{^anonymous}}
         <form class="form-signin" method="post" action="/logout">
             <h3 class="form-signin-heading">{{name}}</h3>
             <button class="btn btn-lg btn-primary btn-block" type="submit">
-            Sign Out</button>
+                Sign Out
+            </button>
         </form>
-        {{/logged}}
+        {{/anonymous}}
     </div>
-    {{#logged}}
+    {{#anonymous}}
     <a href="/registration" class="text-center new-account">Create an account </a>
-    {{/logged}}
+    {{/anonymous}}
 </div>
 </body>
 </html>
