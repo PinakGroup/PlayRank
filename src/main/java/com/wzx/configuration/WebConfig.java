@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
  * Created by arthurwang on 17/3/17.
  */
 @Configuration
-public class WebConfiguration {
+public class WebConfig {
     @Bean
     ServletRegistrationBean h2servletRegistration(){
         ServletRegistrationBean registrationBean = new ServletRegistrationBean( new WebServlet());

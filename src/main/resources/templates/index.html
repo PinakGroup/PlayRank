@@ -112,6 +112,11 @@
                     <a class="nav-link" href="/admin">Admin</a>
                 </li>
                 {{/admin}}
+                {{#user}}
+                <li class="nav-item">
+                    <a class="nav-link" href="/user">My Page</a>
+                </li>
+                {{/user}}
                 {{#anonymous}}
                 <li class="nav-item">
                     <a class="nav-link" href="/login">Login</a>
@@ -122,9 +127,11 @@
                     <a class="nav-link" href="/logout">Logout</a>
                 </li>
                 {{/anonymous}}
+                {{#anonymous}}
                 <li class="nav-item">
                     <a class="nav-link" href="/registration">Registration</a>
                 </li>
+                {{/anonymous}}
             </ul>
         </div>
     </nav>
@@ -275,6 +282,5 @@ void maze(g) {
         }
     }
 }
-
 </script>
 </html>

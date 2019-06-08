@@ -14,10 +14,16 @@ public class PagesController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(Model model) {
         String granted = SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString();
-        if (granted.equals("[ADMIN]")) {
-            model.addAttribute("admin", true);
-        } else if (granted.equals("[ROLE_ANONYMOUS]")) {
-            model.addAttribute("anonymous", true);
+        switch (granted) {
+            case "[ADMIN]":
+                model.addAttribute("admin", true);
+                break;
+            case "[ROLE_ANONYMOUS]":
+                model.addAttribute("anonymous", true);
+                break;
+            case "[USER]":
+                model.addAttribute("user", true);
+                break;
         }
         return "index";
     }
@@ -35,5 +41,15 @@ public class PagesController {
     @RequestMapping(value = "/parser", method = RequestMethod.GET)
     public String parser() {
         return "parser";
+    }
+
+    @RequestMapping(value = "/chat", method = RequestMethod.GET)
+    public String chat() {
+        return "chat";
+    }
+    @RequestMapping(value = "/share", method = RequestMethod.GET)
+    public String share(Model model) {
+        model.addAttribute("fileList", "");
+        return "share";
     }
 }
