@@ -36,11 +36,10 @@ public class UserController {
         binder.addValidators(userValidator);
     }
 
-    @ResponseBody
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public String helloUser() {
-        return "hello, USER!";
+        return "user";
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
@@ -58,7 +57,7 @@ public class UserController {
         }
         userService.save(userForm, "USER");
         securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
-        return "redirect:/login";
+        return "redirect:/user";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)

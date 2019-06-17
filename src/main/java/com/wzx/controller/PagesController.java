@@ -47,9 +47,9 @@ public class PagesController {
     public String chat() {
         return "chat";
     }
-    @RequestMapping(value = "/share", method = RequestMethod.GET)
-    public String share(Model model) {
-        model.addAttribute("fileList", "");
-        return "share";
+
+    @RequestMapping(value = "/push", method = RequestMethod.GET)
+    public String push() {
+        return "user";
     }
 }
