@@ -9,7 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class GamerrankApplicationTests {
+public class PlayRankApplicationTests {
 
 	@Test
 	public void contextLoads() {

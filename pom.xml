@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.wzx</groupId>
-    <artifactId>gamerrank</artifactId>
+    <artifactId>PlayRank</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>gamerrank</name>
-    <description>A gamer ranking service based on SPRING RESTful</description>
+    <name>PlayRank</name>
+    <description>A ranking web interface to evaluate players' performance integrated with Spring Framework.</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
