@@ -7,20 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Date;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class PlayRankApplicationTests {
 
-	@Test
-	public void contextLoads() {
-	}
+    @Autowired
+    private Sender sender;
 
-	@Autowired
-	private Sender sender;
-
-	@Test
-	public void hello() throws Exception {
-		sender.send();
-	}
+    @Test
+    public void hello() throws Exception {
+        String msg = new Date().toString();
+        sender.send(msg);
+    }
 
 }

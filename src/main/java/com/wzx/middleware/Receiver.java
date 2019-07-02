@@ -6,8 +6,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class Receiver {
 
-    @RabbitListener(queues = "date")
-    public void processDate(String date) {
-        System.out.println("Receiver : " + date);
+    @RabbitListener(queues = "rank.queue")
+    public String process(String msg) {
+        System.out.println("Receiver: " + msg);
+        return "your rank";
     }
 }
