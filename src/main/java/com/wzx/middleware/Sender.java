@@ -24,10 +24,7 @@ public class Sender implements RabbitTemplate.ConfirmCallback {
     public void send(String msg) {
         CorrelationData correlationData = new CorrelationData(UUID.randomUUID().toString());
         System.out.println("开始发送消息 : " + msg.toLowerCase());
-        System.out.println(correlationData);
-
         String response = rabbitTemplate.convertSendAndReceive(directExchange.getName(), "rank.routingKey", msg, correlationData).toString();
-        System.out.println("结束发送消息 : " + msg.toLowerCase());
         System.out.println("消费者响应 : " + response + " 消息处理完成");
     }
 
