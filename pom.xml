@@ -9,7 +9,8 @@
     <packaging>jar</packaging>
 
     <name>PlayRank</name>
-    <description>A ranking web interface to evaluate players' performance integrated with Spring Framework.</description>
+    <description>A ranking web interface to evaluate players' performance integrated with Spring Framework.
+    </description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -22,6 +23,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+        <docker.image.prefix>PlayRank</docker.image.prefix>
     </properties>
 
     <dependencies>
@@ -96,8 +98,15 @@
                     <addResources>true</addResources>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>1.4.9</version>
+                <configuration>
+                    <repository>${docker.image.prefix}/${project.artifactId}</repository>
+                    <tag>${project.version}</tag>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
-
-
 </project>

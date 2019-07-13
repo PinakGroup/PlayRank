@@ -17,7 +17,7 @@ Hello user, there will be some messages for you:
 <button id="btn" onclick="send()">Send Me</button>
 
 <script type="text/javascript">
-    var ws = new WebSocket('ws://127.0.0.1:15674/ws');
+    var ws = new WebSocket('ws://rabbitmq:15674/ws');
     var client = Stomp.over(ws);
     client.heartbeat.outgoing = 0;
     client.heartbeat.incoming = 0;

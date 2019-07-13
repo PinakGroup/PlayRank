@@ -1,0 +1,17 @@
+version: '3.1'
+
+services:
+  core:
+    build:
+      context: .
+      dockerfile: docker/core/Dockerfile
+    ports:
+      - 8080:8080
+
+  rabbitmq:
+    build:
+      context: .
+      dockerfile: docker/rabbitmq/Dockerfile
+    ports:
+      - 5672:5672
+      - 15672:15672
