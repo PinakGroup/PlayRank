@@ -2,21 +2,20 @@ package com.wzx.validation;
 
 import com.wzx.domain.User;
 import com.wzx.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-
-import javax.inject.Inject;
 
 /**
  * Created by arthurwang on 17/2/22.
  */
 @Component
 public class UserValidator implements Validator {
-    private UserService userService;
+    private final UserService userService;
 
-    @Inject
+    @Autowired
     public UserValidator(UserService userService) {
         this.userService = userService;
     }

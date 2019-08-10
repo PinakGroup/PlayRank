@@ -26,14 +26,14 @@ public class SwaggerConfig {
                 .paths(PathSelectors.any())
                 .build();
     }
+
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Spring Boot中使用Swagger2构建RESTful APIs")
                 .description("EtherJSON")
-                .termsOfServiceUrl("w-zx/github.com/etherjson")
+                .termsOfServiceUrl("w-zx/github.com/PlayRank")
                 .contact("Arthur Wang")
                 .version("1.0")
                 .build();
     }
-
 }

@@ -31,7 +31,7 @@ public class JsonParser {
     private int nestingLevel;
 
     private JsonArray array;
-    private JsonObject j = new JsonObject();   // 存储一个Object
+    private final JsonObject j = new JsonObject();   // 存储一个Object
 
     /*
  * |                      bufferOffset

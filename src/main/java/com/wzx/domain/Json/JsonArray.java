@@ -9,7 +9,7 @@ import java.util.List;
  * Created by arthurwang on 17/3/25.
  */
 public class JsonArray extends JsonValue implements Iterable<JsonValue>{
-    private List<JsonValue> values;
+    private final List<JsonValue> values;
 
     public JsonArray() {
         values = new ArrayList<>();

@@ -16,11 +16,11 @@ public class Maze {
     private final int E = 4;
     private final int W = 8;
 
-    private List<Integer> directions;
-    private List<List<Integer>> grid;
-    private HashMap<Integer, Integer> DX;
-    private HashMap<Integer, Integer> DY;
-    private HashMap<Integer, Integer> OPPOSITE;
+    private final List<Integer> directions;
+    private final List<List<Integer>> grid;
+    private final HashMap<Integer, Integer> DX;
+    private final HashMap<Integer, Integer> DY;
+    private final HashMap<Integer, Integer> OPPOSITE;
 
     private String maze = "";
 

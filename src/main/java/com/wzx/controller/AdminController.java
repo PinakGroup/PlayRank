@@ -4,6 +4,7 @@ import com.wzx.domain.Role;
 import com.wzx.domain.User;
 import com.wzx.repository.RoleRepository;
 import com.wzx.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.inject.Inject;
 import java.util.LinkedHashMap;
 
 /**
@@ -22,10 +22,10 @@ import java.util.LinkedHashMap;
 @RequestMapping(value = "/admin")
 @PreAuthorize("hasAuthority('ADMIN')")
 public class AdminController {
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
-    @Inject
+    @Autowired
     public AdminController(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
@@ -48,12 +48,11 @@ public class AdminController {
     @ResponseBody
     @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
     public void delete(@PathVariable Long id, Model model) {
-        if (userRepository.findOne(id) == null) {
-            //throw new ObjectNotFoundException(id, User.class.toString());
+        if (!userRepository.findById(id).isPresent()) {
             model.addAttribute("error", true);
         } else {
             model.addAttribute("error", false);
-            userRepository.delete(id);
+            userRepository.deleteById(id);
         }
     }
 }

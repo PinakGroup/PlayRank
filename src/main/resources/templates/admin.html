@@ -11,6 +11,7 @@
         body {
             padding-top: 5rem;
         }
+
         .side {
             margin-left: 3rem;
         }
@@ -20,7 +21,7 @@
 <header class="header">
     <nav class="navbar navbar-inverse fixed-top bg-inverse">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/"> EtherJSON </a>
+            <a class="navbar-brand" href="/"> PlayRank </a>
         </div>
     </nav>
 </header>
@@ -67,7 +68,7 @@
         var _this = $(this);
         var id = _this.parent().siblings(".user").find(".id").text();
         $.ajax({
-            url: "/admin/user/"+id,
+            url: "/admin/user/" + id,
             type: "DELETE",
             success: function (e) {
                 _this.closest("li").remove();

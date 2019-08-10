@@ -15,7 +15,7 @@ public class Todo implements Serializable {
     @GeneratedValue
     private Long id;
 
-    @Column(length = 255, nullable = false)
+    @Column(nullable = false)
     private String content;
 
     public Long getId() {
@@ -30,7 +30,7 @@ public class Todo implements Serializable {
         return content;
     }
 
-    public void setContent(String content) {
+    private void setContent(String content) {
         this.content = content;
     }
 
