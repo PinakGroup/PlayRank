@@ -1,6 +1,7 @@
 package com.wzx;
 
 import com.wzx.middleware.Sender;
+import com.wzx.service.impl.MsgServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,12 @@ public class PlayRankApplicationTests {
     @Autowired
     private Sender sender;
 
+    @Autowired
+    private MsgServiceImpl msgService;
+
     @Test
     public void hello() throws Exception {
         String msg = new Date().toString();
-        sender.send(msg);
+        msgService.setMsg("1", msg);
     }
-
 }

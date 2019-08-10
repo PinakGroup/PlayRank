@@ -22,7 +22,7 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-                                        AuthenticationException exception) throws IOException, ServletException {
+                                        AuthenticationException exception) throws IOException {
         if (exception.getClass().isAssignableFrom(UsernameNotFoundException.class)) {
 
         } else if (exception.getClass().isAssignableFrom(BadCredentialsException.class)) {
