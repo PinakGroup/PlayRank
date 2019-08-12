@@ -7,7 +7,6 @@ import java.util.Date;
 
 @Component
 public class Receiver {
-
     @RabbitListener(queues = "rank.queue")
     public String process(String msg) throws InterruptedException {
         Thread.sleep(2000);

@@ -10,7 +10,6 @@ import java.util.UUID;
 
 @Component
 public class Sender implements RabbitTemplate.ConfirmCallback {
-
     private final RabbitTemplate rabbitTemplate;
     private final DirectExchange directExchange;
 

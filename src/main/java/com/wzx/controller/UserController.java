@@ -1,18 +1,21 @@
 package com.wzx.controller;
 
-import com.wzx.validation.UserValidator;
 import com.wzx.domain.User;
 import com.wzx.service.UserService;
 import com.wzx.service.security.SecurityService;
+import com.wzx.validation.UserValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.inject.Inject;
 import javax.validation.Valid;
 
 /**
@@ -20,11 +23,11 @@ import javax.validation.Valid;
  */
 @Controller
 public class UserController {
-    private UserService userService;
-    private SecurityService securityService;
-    private UserValidator userValidator;
+    private final UserService userService;
+    private final SecurityService securityService;
+    private final UserValidator userValidator;
 
-    @Inject
+    @Autowired
     public UserController(UserService userService, SecurityService securityService, UserValidator userValidator) {
         this.userService = userService;
         this.securityService = securityService;

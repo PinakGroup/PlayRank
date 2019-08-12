@@ -2,9 +2,20 @@ server:
   port: 8080
 
 spring:
+  jpa:
+    show-sql: true
   rabbitmq:
     host: localhost
     port: 5672
     username: guest
     password: guest
     publisher-confirms: true
+  cache:
+    type: redis
+  redis:
+    database: 0
+    host: localhost
+    port: 6379
+    timeout: 5000
+  mustache:
+    suffix: .html
