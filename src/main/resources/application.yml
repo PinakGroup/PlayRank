@@ -2,20 +2,20 @@ server:
   port: 8080
 
 spring:
+  jpa:
+    show-sql: true
   rabbitmq:
     host: localhost
     port: 5672
     username: guest
     password: guest
     publisher-confirms: true
+  cache:
+    type: redis
   redis:
-    # Redis数据库索引（默认为0）,如果设置为1，那么存入的key-value都存放在select 1中
     database: 0
-    # Redis服务器地址
     host: localhost
-    # Redis服务器连接端口
     port: 6379
-    # 连接超时时间（毫秒）
-    timeout: 0
+    timeout: 5000
   mustache:
     suffix: .html

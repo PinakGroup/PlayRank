@@ -48,11 +48,11 @@ public class AdminController {
     @ResponseBody
     @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
     public void delete(@PathVariable Long id, Model model) {
-        if (!userRepository.findById(id).isPresent()) {
-            model.addAttribute("error", true);
-        } else {
+        if (userRepository.findById(id).isPresent()) {
             model.addAttribute("error", false);
             userRepository.deleteById(id);
+        } else {
+            model.addAttribute("error", true);
         }
     }
 }

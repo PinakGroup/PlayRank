@@ -1,28 +1,27 @@
 package com.wzx;
 
-import com.wzx.middleware.Sender;
-import com.wzx.service.impl.MsgServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.Date;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class PlayRankApplicationTests {
-
     @Autowired
-    private Sender sender;
-
-    @Autowired
-    private MsgServiceImpl msgService;
+    private RedisTemplate<Object, Object> redisTemplate;
 
     @Test
-    public void hello() throws Exception {
-        String msg = new Date().toString();
-        msgService.setMsg("1", msg);
+    public void RedisTests(){
+
+        try {
+            redisTemplate.opsForValue().set("name", "张三");
+            Object object = redisTemplate.opsForValue().get("name");
+            System.out.println(object);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
