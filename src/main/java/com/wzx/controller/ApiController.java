@@ -1,8 +1,6 @@
 package com.wzx.controller;
 
 import com.wzx.domain.Maze;
-import com.wzx.service.JsonParser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,23 +11,10 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api")
 public class ApiController {
-    private final JsonParser jsonParser;
-
-    @Autowired
-    public ApiController(JsonParser jsonParser) {
-        this.jsonParser = jsonParser;
-    }
-
     @RequestMapping(value = "/maze", method = RequestMethod.GET)
     List<List<Integer>> maze(@RequestParam(required = false, defaultValue = "15") int rows,
                              @RequestParam(required = false, defaultValue = "15") int cols) {
         Maze maze = new Maze();
         return maze.getMaze(rows, cols);
-    }
-
-    @RequestMapping(value = "/json", method = RequestMethod.POST)
-    String json(@RequestBody String str) {
-        jsonParser.parse(str);
-        return jsonParser.getJ().getObject();
     }
 }
