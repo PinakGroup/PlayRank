@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Date;
-
 /**
  * Created by arthurwang on 16/12/30.
  */
@@ -49,15 +47,9 @@ public class PagesController {
         return "403";
     }
 
-    @RequestMapping(value = "/parser", method = RequestMethod.GET)
-    public String parser() {
-        return "parser";
-    }
-
     @ResponseBody
     @RequestMapping(value = "/send", method = RequestMethod.GET)
     public void send() {
-        String msg = new Date().toString();
-        sender.send(msg);
+        sender.send();
     }
 }

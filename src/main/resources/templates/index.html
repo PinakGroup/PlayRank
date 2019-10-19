@@ -97,7 +97,7 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Document</a>
+                    <a class="nav-link" href="#">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">GitHub</a>
@@ -137,8 +137,8 @@
 <div class="container-fuild">
     <div class="jumbotron text-center">
         <h1 class="jumbotron-heading">PlayRank</h1>
-        <p class="lead">Get your ranking. Spring RESTful.</p>
-        <a class="btn btn-lg btn-primary" href="" role="button">View docs »</a>
+        <p class="lead">Get your ranking. For gamers.</p>
+        <a class="btn btn-lg btn-primary" href="" role="button">View GitHub »</a>
     </div>
 
     <hr class="featurette-divider"/>
@@ -146,26 +146,16 @@
     <div class="container">
         <div class="row vertical-center">
             <div class="col-md-7">
-                <h2 class="featurette-heading">Generate Maze<br/> <span class="text-muted">And find the path.</span>
+                <h2 class="featurette-heading">PlayRank<br/> <span class="text-muted">Scores and ranks.</span>
                 </h2>
                 <p class="lead"></p>
             </div>
 
-            <div class="col-md-5">
-                <div class="row">
-                    <div class="input-group">
-                        <input id="row" type="text" class="form-control" placeholder="Rank"/>
-                        <span class="input-group-btn">
-                        <button id="btn" class="btn btn-secondary" type="button">Generate</button>
-                        </span>
-                    </div>
-                </div>
-
-                <div class="row text-center">
-                    <div class="col-md-12">
-                        <canvas id="mycanvas"></canvas>
-                    </div>
-                </div>
+            <div class="jumbotron">
+                <h2 class="featurette-heading">Ready?<br/> <span class="text-muted">Game start!</span>
+                </h2>
+                <a class="btn btn-lg btn-primary" href="/registration" role="button">Quick Start</a>
+                <a class="btn btn-lg btn-primary" href="/login" role="button">Login</a>
             </div>
         </div>
     </div>
@@ -173,84 +163,9 @@
     <footer>
         <div class="container">
             <p class="float-right"><a href="#">Back to top</a></p>
-            <p>© 2017 Arthur Wang · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
+            <p>© 2019 Arthur Wang · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
         </div>
     </footer>
 </div>
 </body>
-<script>
-    $("#btn").click(function (e) {
-        rows = $("#row").val();
-        //cols = $("#col").val();
-        $.ajax({
-            url: "/api/maze",
-            type: "GET",
-            data: {
-                "rows": rows,
-                "cols": rows
-            },
-            success: function (data) {
-                Processing.instances[0].maze(data);
-            }
-        });
-    });
-
-    $("#jsonSubmit").click(function (e) {
-        $.ajax({
-            url: "/api/json",
-            type: "POST",
-            contentType: "application/json",
-            data: $("#jsonInput").val(),
-            success: function (data) {
-                $("#jsonOutput").text(data)
-            },
-            error: function () {
-                console.log("error")
-            }
-        })
-    });
-
-    $('input').keypress(function (e) {
-        if (e.which == 13) {
-            $('#btn').click();
-            return false;
-        }
-    });
-</script>
-<script type="text/processing" data-processing-target="mycanvas">
-void setup() {
-    sideLength = 301;
-    size(sideLength, sideLength);
-    background(255);
-}
-void maze(g) {
-    background(255);
-    rows = $("#row").val() || 15;
-    //cols = $("#col").val() || 15;
-    cols = rows;
-    step = (width-1)/rows;
-
-    stroke(137, 194, 148, 50);
-    for(int i=0; i<=width-1;) {
-        line(i, 0, i, width-1);
-        line(0, i, width-1, i);
-        i+=step;
-    }
-
-    stroke(0);
-    line(0, 0, width, 0);
-    line(0, 0, 0, width);
-    for(int i=0; i<=rows-1; i++) {
-        for(int j=0; j<=rows-1; j++) {
-            if((g[i][j] & 2) == 0) {
-                line(step*j, step*(i+1), step*(j+1), step*(i+1));
-            }
-            if((g[i][j] & 4) == 0) {
-                line(step*(j+1), step*i, step*(j+1), step*(i+1));
-            }
-        }
-    }
-}
-
-</script>
 </html>
