@@ -23,7 +23,7 @@ public class RabbitConfig {
     }
 
     @Bean
-    public Binding binding() {
-        return BindingBuilder.bind(queue()).to(directExchange()).with("rank.routingKey");
+    public Binding binding(Queue queue, DirectExchange directExchange) {
+        return BindingBuilder.bind(queue).to(directExchange).with("rank.routingKey");
     }
 }
