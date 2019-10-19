@@ -27,7 +27,7 @@ You are in the top <span id="rank">0</span> % !
 
         const on_connect = function () {
             console.log('connected');
-            client.subscribe("/exchange/rank.exchange/rank.routingKey", function (data) {
+            client.subscribe("/exchange/direct.exchange/rank.routingKey", function (data) {
                 let json = JSON.parse(data.body);
                 $("#time").html(json.time);
                 $("#rank").html(json.rank);

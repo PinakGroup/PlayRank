@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -16,7 +17,12 @@ public class Sender implements RabbitTemplate.ReturnCallback {
     private final RabbitTemplate rabbitTemplate;
     private final Random r = new Random();
     private final ObjectMapper mapper = new ObjectMapper();
+    @Value("${direct_exchange_name}")
+    private String directExchangeName;
+    @Value("${routingKey}")
+    private String routingKey;
 
+    // Bean中唯一的构造器不需要Autowired注解，默认注入
     public Sender(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
     }
@@ -54,6 +60,6 @@ public class Sender implements RabbitTemplate.ReturnCallback {
             }
         });
 
-        rabbitTemplate.convertAndSend("rank.exchange", "rank.routingKey", content);
+        rabbitTemplate.convertAndSend(directExchangeName, routingKey, content);
     }
 }

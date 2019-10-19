@@ -12,10 +12,16 @@ import java.util.Date;
 @RabbitListener(queues = "rank.queue")
 public class Receiver {
     @RabbitHandler
-    public void process(String sendMsg, Channel channel, Message message) throws InterruptedException {
-        Thread.sleep(2000);
+    public void process(String sendMsg, Channel channel, Message message) {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         System.out.println("AckReceiver: 收到了一条消息<" + sendMsg + ">，收到此消息时间<"
                 + new Date().toString() + ">");
+
         try {
             // 告诉服务器收到这条消息已经被当前消费者消费了，可以在队列安全删除，这样后面就不会再重发了，
             // 否则消息服务器以为这条消息没处理掉，后续还会再发
