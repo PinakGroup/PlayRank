@@ -2,24 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Notification</title>
-    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <script src="/js/jquery.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <title>Game History</title>
+    <link type="text/css" href="css/bootstrap.css" rel="stylesheet"/>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/sockjs.min.js"></script>
+    <script src="/js/stomp.min.js"></script>
 </head>
 <body>
-<span>Hello user, here is your game ranking: </span>
-<br />
+<span>Hello user, here you can check your game ranking: </span>
+<br/>
 At time: <span id="time"></span>
-<br />
+<br/>
 You are in the top <span id="rank">0</span> % !
-<br />
+<br/>
 <button id="btn" onclick="send()">Finish Game</button>
 
 <script type="text/javascript">
     function connectMQ() {
-        const ws = new WebSocket('ws://localhost:15674/ws');
+        const ws = new WebSocket('ws://' + window.location.hostname + ':15674/ws');
         const client = Stomp.over(ws);
         client.debug = null;
         // client.heartbeat.outgoing = 0;
@@ -27,7 +27,7 @@ You are in the top <span id="rank">0</span> % !
 
         const on_connect = function () {
             console.log('connected');
-            client.subscribe("/exchange/direct.exchange/rank.routingKey", function (data) {
+            client.subscribe('/exchange/direct.exchange/rank.routingKey', function (data) {
                 let json = JSON.parse(data.body);
                 $("#time").html(json.time);
                 $("#rank").html(json.rank);
@@ -36,13 +36,12 @@ You are in the top <span id="rank">0</span> % !
 
         const on_error = function () {
             console.log('error');
-            window.setTimeout(function () {
-                connectMQ();
-            }, 1000);
+            // connectMQ();
         };
 
         client.connect('guest', 'guest', on_connect, on_error, '/');
     }
+
     connectMQ();
 
     const send = function () {
@@ -52,7 +51,7 @@ You are in the top <span id="rank">0</span> % !
             success: function (data) {
             },
             error: function () {
-                console.log("error");
+                console.log('error');
             }
         })
     };

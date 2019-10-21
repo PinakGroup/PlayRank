@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3'
 
 services:
   core:
@@ -7,6 +7,8 @@ services:
       dockerfile: docker/core/Dockerfile
     ports:
       - 8080:8080
+    links:
+      - rabbitmq
 
   rabbitmq:
     build:
