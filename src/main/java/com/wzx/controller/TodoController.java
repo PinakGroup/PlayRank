@@ -19,7 +19,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/todos")
 public class TodoController {
-
     private final Logger logger = LoggerFactory.getLogger(TodoController.class);
     private final TodoService todoService;
 

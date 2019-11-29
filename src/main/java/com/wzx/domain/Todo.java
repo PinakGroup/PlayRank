@@ -34,12 +34,7 @@ public class Todo implements Serializable {
         this.content = content;
     }
 
-    protected Todo() {
-
-    }
-
     public Todo(String content) {
         setContent(content);
     }
-
 }
