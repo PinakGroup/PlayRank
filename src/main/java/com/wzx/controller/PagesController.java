@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 public class PagesController {
-
     private final Sender sender;
 
     public PagesController(Sender sender) {
