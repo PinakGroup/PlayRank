@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Optional;
 
 /**
  * Created by arthurwang on 17/2/22.
@@ -33,17 +34,17 @@ public class UserServiceImpl implements UserService {
     public void setRole(User user, String roleName) {
         Role role = roleRepository.findByName(roleName);
         user.setRoles(Collections.singletonList(role));
-        userRepository.save(user);
     }
 
     @Override
-    public void save(User user, String roleName) {
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public void createUser(User user, String roleName) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         setRole(user, roleName);
-    }
-
-    @Override
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
+        userRepository.save(user);
     }
 }

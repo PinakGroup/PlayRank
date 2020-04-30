@@ -1,5 +1,7 @@
 package com.wzx.domain;
 
+import org.springframework.security.core.GrantedAuthority;
+
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Set;
@@ -9,7 +11,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "role")
-public class Role {
+public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,7 +37,7 @@ public class Role {
         this.name = name;
     }
 
-    public Role() {
+    protected Role() {
     }
 
     public Role(final String name) {
@@ -76,5 +78,10 @@ public class Role {
     @Override
     public String toString() {
         return "Role { name=" + name + "," + "id=" + id + " }";
+    }
+
+    @Override
+    public String getAuthority() {
+        return name;
     }
 }

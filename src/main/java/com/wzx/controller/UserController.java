@@ -58,7 +58,7 @@ public class UserController {
             model.addAttribute("errors", bindingResult.getFieldError().getDefaultMessage());
             return "registration";
         }
-        userService.save(userForm, "USER");
+        userService.createUser(userForm, "USER");
         securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
         return "redirect:/user";
     }
