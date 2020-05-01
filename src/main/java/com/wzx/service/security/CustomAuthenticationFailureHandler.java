@@ -20,10 +20,11 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+    public void onAuthenticationFailure(HttpServletRequest request,
+                                        HttpServletResponse response,
                                         AuthenticationException exception) throws IOException {
         if (exception.getClass().isAssignableFrom(UsernameNotFoundException.class)) {
-
+            redirectStrategy.sendRedirect(request, response, "/login?error");
         } else if (exception.getClass().isAssignableFrom(BadCredentialsException.class)) {
             redirectStrategy.sendRedirect(request, response, "/login?error");
         }
