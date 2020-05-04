@@ -1,6 +1,6 @@
 package com.wzx.service;
 
-import com.wzx.domain.Todo;
+import com.wzx.model.Todo;
 
 import java.util.List;
 

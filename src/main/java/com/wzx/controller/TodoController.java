@@ -1,6 +1,6 @@
 package com.wzx.controller;
 
-import com.wzx.domain.Todo;
+import com.wzx.model.Todo;
 import com.wzx.service.TodoService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;

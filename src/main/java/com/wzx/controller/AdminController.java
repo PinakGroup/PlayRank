@@ -1,7 +1,7 @@
 package com.wzx.controller;
 
-import com.wzx.domain.Role;
-import com.wzx.domain.User;
+import com.wzx.model.Role;
+import com.wzx.model.User;
 import com.wzx.repository.RoleRepository;
 import com.wzx.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

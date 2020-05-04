@@ -1,6 +1,7 @@
 package com.wzx.controller;
 
-import com.wzx.domain.User;
+import com.wzx.model.ERole;
+import com.wzx.model.User;
 import com.wzx.service.UserService;
 import com.wzx.service.security.SecurityService;
 import com.wzx.validation.UserValidator;
@@ -14,11 +15,13 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by arthurwang on 17/2/22.
  */
-@Controller
+//@Controller
 public class UserController {
     private final UserService userService;
     private final SecurityService securityService;
@@ -43,9 +46,18 @@ public class UserController {
         return "user";
     }
 
+    @GetMapping(value = "/react")
+    @ResponseBody
+    @CrossOrigin
+    public Map<String, Boolean> react() {
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("Admin", false);
+        return map;
+    }
+
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
-        model.addAttribute("userForm", new User());
+//        model.addAttribute("userForm", new User());
         model.addAttribute("errors", "");
         return "registration";
     }
@@ -56,7 +68,7 @@ public class UserController {
             model.addAttribute("errors", bindingResult.getFieldError().getDefaultMessage());
             return "registration";
         }
-        userService.createUser(userForm, "USER");
+        userService.createUser(userForm, ERole.ROLE_USER);
         securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
         return "redirect:/user";
     }

@@ -1,6 +1,6 @@
 package com.wzx.validation;
 
-import com.wzx.domain.User;
+import com.wzx.model.User;
 import com.wzx.service.UserService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;

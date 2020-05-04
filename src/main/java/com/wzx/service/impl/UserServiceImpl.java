@@ -1,7 +1,8 @@
 package com.wzx.service.impl;
 
-import com.wzx.domain.Role;
-import com.wzx.domain.User;
+import com.wzx.model.ERole;
+import com.wzx.model.Role;
+import com.wzx.model.User;
 import com.wzx.repository.RoleRepository;
 import com.wzx.repository.UserRepository;
 import com.wzx.service.UserService;
@@ -31,9 +32,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void setRole(User user, String roleName) {
-        Role role = roleRepository.findByName(roleName);
-        user.setRoles(Collections.singletonList(role));
+    public void setRole(User user, ERole roleName) {
+        Role role = roleRepository.findByName(roleName).orElse(null);
+        user.setRoles(Collections.singleton(role));
     }
 
     @Override
@@ -42,7 +43,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createUser(User user, String roleName) {
+    public void createUser(User user, ERole roleName) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         setRole(user, roleName);
         userRepository.save(user);

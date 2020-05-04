@@ -1,6 +1,6 @@
 package com.wzx.service;
 
-import com.wzx.domain.Todo;
+import com.wzx.model.Todo;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -2,9 +2,12 @@ package com.wzx.controller;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by arthurwang on 16/12/30.
@@ -12,20 +15,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class PagesController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index(Model model) {
+    @ResponseBody
+    public Map<String, Boolean> index() {
         String granted = SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString();
+        Map<String, Boolean> map = new HashMap<>();
+
         switch (granted) {
             case "[ADMIN]":
-                model.addAttribute("admin", true);
+                map.put("admin", true);
                 break;
             case "[ROLE_ANONYMOUS]":
-                model.addAttribute("anonymous", true);
+                map.put("anonymous", true);
                 break;
             case "[USER]":
-                model.addAttribute("user", true);
+                map.put("user", true);
                 break;
         }
-        return "index";
+        return map;
     }
 
     @RequestMapping(value = "/todo", method = RequestMethod.GET)

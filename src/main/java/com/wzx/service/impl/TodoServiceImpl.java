@@ -1,6 +1,6 @@
 package com.wzx.service.impl;
 
-import com.wzx.domain.Todo;
+import com.wzx.model.Todo;
 import com.wzx.repository.TodoRepository;
 import com.wzx.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
