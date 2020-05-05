@@ -32,9 +32,9 @@ public class DataInit {
 
     @PostConstruct
     public void dataInit() {
-        User admin = new User("admin", "12");
-        admin.setPassword(passwordEncoder.encode("12"));
-        admin.setPasswordConfirm(passwordEncoder.encode("12"));
+        User admin = new User("admin",
+                "admin@test.com",
+                passwordEncoder.encode("12"));
 
         Role adminRole = new Role(ERole.ROLE_ADMIN);
         roleRepository.save(adminRole);

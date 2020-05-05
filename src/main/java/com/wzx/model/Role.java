@@ -1,7 +1,5 @@
 package com.wzx.model;
 
-import org.springframework.security.core.GrantedAuthority;
-
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Set;
@@ -23,6 +21,13 @@ public class Role {
     @Column(length = 20)
     private ERole name;
 
+    protected Role() {
+    }
+
+    public Role(final ERole name) {
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }
@@ -36,13 +41,6 @@ public class Role {
     }
 
     public void setName(ERole name) {
-        this.name = name;
-    }
-
-    protected Role() {
-    }
-
-    public Role(final ERole name) {
         this.name = name;
     }
 

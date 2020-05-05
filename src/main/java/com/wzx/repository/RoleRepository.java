@@ -2,7 +2,6 @@ package com.wzx.repository;
 
 import com.wzx.model.ERole;
 import com.wzx.model.Role;
-import com.wzx.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

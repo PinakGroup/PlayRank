@@ -3,7 +3,6 @@ package com.wzx.configuration;
 import com.wzx.service.impl.UserDetailsServiceImpl;
 import com.wzx.service.security.AuthEntryPointJwt;
 import com.wzx.service.security.AuthTokenFilter;
-import com.wzx.service.security.CustomAuthenticationFailureHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,12 +23,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
-    final UserDetailsServiceImpl userDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
     private final AuthEntryPointJwt unauthorizedHandler;
 
-    public WebSecurityConfig(CustomAuthenticationFailureHandler customAuthenticationFailureHandler, UserDetailsServiceImpl userDetailsService, AuthEntryPointJwt unauthorizedHandler) {
-        this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
+    public WebSecurityConfig(UserDetailsServiceImpl userDetailsService, AuthEntryPointJwt unauthorizedHandler) {
         this.userDetailsService = userDetailsService;
         this.unauthorizedHandler = unauthorizedHandler;
     }
@@ -63,13 +60,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers("/", "/api/auth/**").permitAll()
                 .antMatchers("/api/test/**", "/registration",
                         "/todo", "/todos", "/listuser", "/console/**", "/css/**", "/js/**", "/img/**").permitAll()
+                .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui", "/swagger-resources", "/swagger-resources/configuration/security", "/swagger-ui.html", "/webjars/**").permitAll()
                 .anyRequest().authenticated();
-//                .and().formLogin().failureHandler(customAuthenticationFailureHandler)
-//                .loginPage("/login").permitAll()
-//                .and().logout().deleteCookies("JSESSIONID")
-//                .and().rememberMe().key("uniqueAndSecret")
-//                .and().exceptionHandling().accessDeniedPage("/403")
-//                .and().logout().permitAll();
 
         http.headers().frameOptions().disable();
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

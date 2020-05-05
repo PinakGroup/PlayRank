@@ -14,7 +14,7 @@ public class PlayRankApplicationTests {
     private RedisTemplate<Object, Object> redisTemplate;
 
     @Test
-    public void RedisTests(){
+    public void RedisTests() {
 
         try {
             redisTemplate.opsForValue().set("name", "张三");
