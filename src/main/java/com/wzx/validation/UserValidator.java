@@ -2,7 +2,7 @@ package com.wzx.validation;
 
 import com.wzx.model.User;
 import com.wzx.repository.UserRepository;
-import org.jetbrains.annotations.NotNull;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -20,12 +20,12 @@ public class UserValidator implements Validator {
     }
 
     @Override
-    public boolean supports(@NotNull Class<?> clazz) {
+    public boolean supports(@NonNull Class<?> clazz) {
         return User.class.equals(clazz);
     }
 
     @Override
-    public void validate(@NotNull Object obj, @NotNull Errors errors) {
+    public void validate(@NonNull Object obj, @NonNull Errors errors) {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "field.required", "Username should not be empty.");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "field.required", "Password should not be empty.");
 

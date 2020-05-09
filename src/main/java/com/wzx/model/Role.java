@@ -1,8 +1,6 @@
 package com.wzx.model;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Set;
 
 /**
  * Created by arthurwang on 17/2/21.
@@ -13,9 +11,6 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToMany(mappedBy = "roles")
-    private Collection<User> users;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
@@ -44,16 +39,11 @@ public class Role {
         this.name = name;
     }
 
-    public Collection<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
-
     @Override
     public String toString() {
-        return name.toString();
+        return "Role{" +
+                "id=" + id +
+                ", name=" + name +
+                '}';
     }
 }
