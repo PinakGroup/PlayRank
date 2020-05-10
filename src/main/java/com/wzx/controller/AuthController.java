@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
  * @author arthurwang
  * @date 2020/05/05
  */
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:8081", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
